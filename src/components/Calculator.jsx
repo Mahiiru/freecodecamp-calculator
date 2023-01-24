@@ -7,80 +7,66 @@ import { useState } from "react";
 export function Calculator() {
 
 
-    const [sumX, setSumX] = useState(0);
-    const [sumY, setSumY] = useState(0);
-    const [func, setFunc] = useState([]);
-    const [dot, setDot] = useState(0);
+    const [actualValue, setActualValue] = useState(0);
+    const [operatedValue, setOperatedValue] = useState(0);
+    const [actualOperator, setActualOperator] = useState([]);
+    const [dotCountPerNumber, setDotCountPerNumber] = useState(0);
 
 
-    const allClear = () => {
-        setSumX(0);
-        setSumY(0);
-        setFunc([]);
-        setDot(0);
+    const handlerClearButton = () => {
+        setActualValue(0);
+        setOperatedValue(0);
+        setActualOperator([]);
+        setDotCountPerNumber(0);
     }
 
-    const keystroke = (key) => {
-        if (sumX == 0) {
-            console.log('a');
-            setSumX([key]);
-        } else if (sumX == 0 && key == '.') {
-            console.log('b');
-            setSumX(sumX + key);
-        } else if (sumX !== 0 && sumX !== sumY && func !== '=') {
-            console.log('c')
-            setSumX(sumX + key);
-        } else if (sumX == sumY) {
-            console.log('d');
-            setSumX([key]);
+    const handlerDigitsButtons = (digit) => {
+        if (Number(actualValue) === 0) {
+            setActualValue([digit]);
+        } else if (actualValue === 0 && digit === '.') {
+            setActualValue(actualValue + digit);
+        } else if (actualValue !== 0 && actualValue !== operatedValue && actualOperator !== '=') {
+            setActualValue(actualValue + digit);
+        } else if (actualValue === operatedValue) {
+            setActualValue([digit]);
         }
     }
 
-    const decimal = (key) => {
-        if (dot == 0) {
-            console.log("dec trigger")
-            keystroke(key);
-            setDot(1);
-        } else {
-            console.log("don't double dot dude")
+    const handlerDotButton = (decimal) => {
+        if (dotCountPerNumber === 0) {
+            handlerDigitsButtons(decimal);
+            setDotCountPerNumber(1);
         }
     }
 
-    const functionKey = (key) => {
-        if (sumX == 0 && func == []) {
-            console.log("1")
-            setFunc(key);
-        } else if (sumX == 0 && func !== [] && key == '-') {
-            console.log("2")
-            setSumY(0 - sumY);
-        } else if (sumX == 0 && func !== [] && key == '+') {
-            console.log("3")
-            setSumY(Math.abs(sumY));
-            setFunc(key);
-        } else if (sumX !== 0 && sumY == 0 && key !== '=') {
-            console.log("4")
-            setFunc(key);
-            setSumY(sumX);
-            setSumX(0);
-            setDot(0);
-        } else if (sumX !== 0 && sumY !== 0 && key !== '=') {
-            console.log("5")
-            setFunc(key);
-            setSumX(eval(Number(sumY) + func + Number(sumX)));
-            setSumY(eval(Number(sumY) + func + Number(sumX)));
-            setDot(0);
-        } else if (sumX == 0 && sumY == 0 && key == '=') {
-            console.log("6")
-            setFunc(key);
-            setSumX(sumX);
-            setSumY(0);
-            setDot(0);
-        } else if (sumX !== 0 && sumY !== 0 && key == '=') {
-            console.log("7")
-            setFunc(key);
-            setSumX(eval(Number(sumY) + func + Number(sumX)));
-            setSumY(0);
-            setDot(0);
+    const handlerOperatorsButtons = (operator) => {
+        if (actualValue === 0 && actualOperator === []) {
+            setActualOperator(operator);
+        } else if (actualValue === 0 && actualOperator !== [] && operator === '-') {
+            setOperatedValue(0 - operatedValue);
+        } else if (actualValue === 0 && actualOperator !== [] && operator === '+') {
+            setOperatedValue(Math.abs(operatedValue));
+            setActualOperator(operator);
+        } else if (actualValue !== 0 && operatedValue === 0 && operator !== '=') {
+            setActualOperator(operator);
+            setOperatedValue(actualValue);
+            setActualValue(0);
+            setDotCountPerNumber(0);
+        } else if (actualValue !== 0 && operatedValue !== 0 && operator !== '=') {
+            setActualOperator(operator);
+            setActualValue(eval(Number(operatedValue) + actualOperator + Number(actualValue)));
+            setOperatedValue(eval(Number(operatedValue) + actualOperator + Number(actualValue)));
+            setDotCountPerNumber(0);
+        } else if (actualValue === 0 && operatedValue === 0 && operator === '=') {
+            setActualOperator(operator);
+            setActualValue(actualValue);
+            setOperatedValue(0);
+            setDotCountPerNumber(0);
+        } else if (actualValue !== 0 && operatedValue !== 0 && operator === '=') {
+            setActualOperator(operator);
+            setActualValue(eval(Number(operatedValue) + actualOperator + Number(actualValue)));
+            setOperatedValue(0);
+            setDotCountPerNumber(0);
         }
     }
 
@@ -89,36 +75,36 @@ export function Calculator() {
     return (
         <div>
             <div>
-                <output id="display">{sumX}</output>
+                <output id="display">{actualValue}</output>
             </div>
             <div>
-                <Button text="AC" eventButton={allClear} id="clear" />
-                <Button text="/" eventButton={() => functionKey("/")} id="divide" />
-                <Button text="*" eventButton={() => functionKey("*")} id="multiply" />
+                <Button text="AC" eventButton={handlerClearButton} id="clear" />
+                <Button text="/" eventButton={() => handlerOperatorsButtons("/")} id="divide" />
+                <Button text="*" eventButton={() => handlerOperatorsButtons("*")} id="multiply" />
             </div>
             <div>
-                <Button text="7" eventButton={() => keystroke(7)} id="seven" />
-                <Button text="8" eventButton={() => keystroke(8)} id="eight" />
-                <Button text="9" eventButton={() => keystroke(9)} id="nine" />
-                <Button text="-" eventButton={() => functionKey("-")} id="subtract" />
+                <Button text="7" eventButton={() => handlerDigitsButtons(7)} id="seven" />
+                <Button text="8" eventButton={() => handlerDigitsButtons(8)} id="eight" />
+                <Button text="9" eventButton={() => handlerDigitsButtons(9)} id="nine" />
+                <Button text="-" eventButton={() => handlerOperatorsButtons("-")} id="subtract" />
             </div>
             <div>
-                <Button text="4" eventButton={() => keystroke(4)} id="four" />
-                <Button text="5" eventButton={() => keystroke(5)} id="five" />
-                <Button text="6" eventButton={() => keystroke(6)} id="six" />
-                <Button text="+" eventButton={() => functionKey("+")} id="add" />
+                <Button text="4" eventButton={() => handlerDigitsButtons(4)} id="four" />
+                <Button text="5" eventButton={() => handlerDigitsButtons(5)} id="five" />
+                <Button text="6" eventButton={() => handlerDigitsButtons(6)} id="six" />
+                <Button text="+" eventButton={() => handlerOperatorsButtons("+")} id="add" />
             </div>
             <div>
                 <div>
-                    <Button text="1" eventButton={() => keystroke(1)} id="one" />
-                    <Button text="2" eventButton={() => keystroke(2)} id="two" />
-                    <Button text="3" eventButton={() => keystroke(3)} id="three" />
+                    <Button text="1" eventButton={() => handlerDigitsButtons(1)} id="one" />
+                    <Button text="2" eventButton={() => handlerDigitsButtons(2)} id="two" />
+                    <Button text="3" eventButton={() => handlerDigitsButtons(3)} id="three" />
                 </div>
                 <div>
-                    <Button text="0" eventButton={() => keystroke(0)} id="zero" />
-                    <Button text="." eventButton={() => decimal(".")} id="decimal" />
+                    <Button text="0" eventButton={() => handlerDigitsButtons(0)} id="zero" />
+                    <Button text="." eventButton={() => handlerDotButton(".")} id="decimal" />
                 </div>
-                <Button text="=" eventButton={() => functionKey("=")} id="equals" />
+                <Button text="=" eventButton={() => handlerOperatorsButtons("=")} id="equals" />
             </div>
         </div>
     );
