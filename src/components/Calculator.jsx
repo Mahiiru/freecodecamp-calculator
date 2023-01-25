@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "./Button";
 import { useState } from "react";
+import '../stylesheets/Calculator.css';
 
 
 
@@ -73,39 +74,39 @@ export function Calculator() {
 
 
     return (
-        <div>
-            <div>
+        <div className="calculator">
+            <div className="outputScreen">
                 <output id="display">{actualValue}</output>
             </div>
-            <div>
-                <Button text="AC" eventButton={handlerClearButton} id="clear" />
-                <Button text="/" eventButton={() => handlerOperatorsButtons("/")} id="divide" />
-                <Button text="*" eventButton={() => handlerOperatorsButtons("*")} id="multiply" />
-            </div>
-            <div>
-                <Button text="7" eventButton={() => handlerDigitsButtons(7)} id="seven" />
-                <Button text="8" eventButton={() => handlerDigitsButtons(8)} id="eight" />
-                <Button text="9" eventButton={() => handlerDigitsButtons(9)} id="nine" />
-                <Button text="-" eventButton={() => handlerOperatorsButtons("-")} id="subtract" />
-            </div>
-            <div>
-                <Button text="4" eventButton={() => handlerDigitsButtons(4)} id="four" />
-                <Button text="5" eventButton={() => handlerDigitsButtons(5)} id="five" />
-                <Button text="6" eventButton={() => handlerDigitsButtons(6)} id="six" />
-                <Button text="+" eventButton={() => handlerOperatorsButtons("+")} id="add" />
-            </div>
-            <div>
-                <div>
-                    <Button text="1" eventButton={() => handlerDigitsButtons(1)} id="one" />
-                    <Button text="2" eventButton={() => handlerDigitsButtons(2)} id="two" />
-                    <Button text="3" eventButton={() => handlerDigitsButtons(3)} id="three" />
-                </div>
-                <div>
-                    <Button text="0" eventButton={() => handlerDigitsButtons(0)} id="zero" />
-                    <Button text="." eventButton={() => handlerDotButton(".")} id="decimal" />
-                </div>
-                <Button text="=" eventButton={() => handlerOperatorsButtons("=")} id="equals" />
-            </div>
+
+            <Button text="AC" eventButton={handlerClearButton} id="clear" />
+            <Button text="/" eventButton={() => handlerOperatorsButtons("/")} id="divide" />
+            <Button text="*" eventButton={() => handlerOperatorsButtons("*")} id="multiply" />
+
+
+            <Button text="7" eventButton={() => handlerDigitsButtons(7)} id="seven" />
+            <Button text="8" eventButton={() => handlerDigitsButtons(8)} id="eight" />
+            <Button text="9" eventButton={() => handlerDigitsButtons(9)} id="nine" />
+            <Button text="-" eventButton={() => handlerOperatorsButtons("-")} id="subtract" />
+
+
+            <Button text="4" eventButton={() => handlerDigitsButtons(4)} id="four" />
+            <Button text="5" eventButton={() => handlerDigitsButtons(5)} id="five" />
+            <Button text="6" eventButton={() => handlerDigitsButtons(6)} id="six" />
+            <Button text="+" eventButton={() => handlerOperatorsButtons("+")} id="add" />
+
+
+
+            <Button text="1" eventButton={() => handlerDigitsButtons(1)} id="one" />
+            <Button text="2" eventButton={() => handlerDigitsButtons(2)} id="two" />
+            <Button text="3" eventButton={() => handlerDigitsButtons(3)} id="three" />
+
+
+            <Button text="0" eventButton={() => handlerDigitsButtons(0)} id="zero" />
+            <Button text="." eventButton={() => handlerDotButton(".")} id="decimal" />
+
+            <Button text="=" eventButton={() => handlerOperatorsButtons("=")} id="equals" />
+
         </div>
     );
 };
